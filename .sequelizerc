@@ -1,0 +1,11 @@
+const path = require("path");
+
+module.exports = {
+  // nói sequelize-cli cách kết nối DB
+  config: path.resolve("./src/config", "config.json"),
+  // cách tạo table trong DB
+  "migrations-path": path.resolve("./src", "migrations"),
+  "models-path": path.resolve("./src", "models"),
+  // nơi tạo dữu liệu
+  "seeders-path": path.resolve("./src", "seeders"),
+};
