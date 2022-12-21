@@ -5,6 +5,7 @@ import { configViewEngine } from "./config/viewEngine";
 import { initWebRoute } from "./route/web";
 // Tác dụng của câu này là để sử dụng process.env
 require("dotenv").config();
+import { connectDB } from "./config/connectDB";
 
 const app = express();
 
@@ -14,6 +15,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // configApp
 configViewEngine(app);
 initWebRoute(app);
+
+connectDB();
 
 let PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {
