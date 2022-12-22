@@ -36,6 +36,39 @@ let createNewUser = async (data) => {
   });
 };
 
+let editUser = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: { id: data.id },
+      });
+      if (user) {
+        (user.firstName = data.firstName),
+          (user.lastName = data.lastName),
+          (user.address = data.address);
+        await user.save();
+      }
+      resolve("Update success !");
+    } catch (error) {
+      reject("Error:", error);
+    }
+  });
+};
+
+let getUserInfoById = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let userById = await db.User.findOne({
+        where: { id: userId },
+        raw: true,
+      });
+      resolve(userById);
+    } catch (error) {
+      reject("Error:", error);
+    }
+  });
+};
+
 // hàm dùng để mã hoá pass
 let hashUserPassword = (password) => {
   return new Promise(async (resole, reject) => {
@@ -51,4 +84,6 @@ let hashUserPassword = (password) => {
 module.exports = {
   createNewUser: createNewUser,
   getAllUsers: getAllUsers,
+  editUser: editUser,
+  getUserInfoById: getUserInfoById,
 };
