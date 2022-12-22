@@ -9,8 +9,13 @@ let getHomePage = async (req, res) => {
   }
 };
 
-let getCRUD = (req, res) => {
-  return res.send("Hello CRUD");
+let getCRUD = async (req, res) => {
+  try {
+    let listUsers = await CRUDService.getAllUsers();
+    console.log("data:", listUsers);
+  } catch (error) {
+    console.log(error);
+  }
 };
 
 let postCRUD = async (req, res) => {
@@ -27,5 +32,3 @@ module.exports = {
   getCRUD: getCRUD,
   postCRUD: postCRUD,
 };
-
-// how fix "Unknown column 'createdAt' in 'field list'" in nodejs ?

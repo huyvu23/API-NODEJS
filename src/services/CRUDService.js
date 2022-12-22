@@ -2,6 +2,19 @@ var bcrypt = require("bcryptjs");
 const salt = bcrypt.genSaltSync(10);
 import db from "../models";
 
+let getAllUsers = () => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let listUser = await db.User.findAll({
+        raw: true,
+      });
+      resolve(listUser);
+    } catch (error) {
+      reject("Error:", error);
+    }
+  });
+};
+
 let createNewUser = async (data) => {
   return new Promise(async (resole, reject) => {
     try {
@@ -30,11 +43,12 @@ let hashUserPassword = (password) => {
       var hash = await bcrypt.hashSync(password, salt);
       resole(hash);
     } catch (error) {
-      reject(error);
+      reject("Error:", error);
     }
   });
 };
 
 module.exports = {
   createNewUser: createNewUser,
+  getAllUsers: getAllUsers,
 };
