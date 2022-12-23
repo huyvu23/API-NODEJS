@@ -46,10 +46,20 @@ let putCRUD = async (req, res) => {
   }
 };
 
+let deleteId = async (req, res) => {
+  let id = req.query.id;
+  if (id) {
+    let message = await CRUDService.deleteUserById(id);
+    console.log(message);
+  } else {
+    console.log("Cannot delete");
+  }
+};
 module.exports = {
   getHomePage: getHomePage,
   getCRUD: getCRUD,
   postCRUD: postCRUD,
   getUserById: getUserById,
   putCRUD: putCRUD,
+  deleteId: deleteId,
 };

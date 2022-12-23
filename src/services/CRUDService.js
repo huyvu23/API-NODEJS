@@ -69,6 +69,24 @@ let getUserInfoById = (userId) => {
   });
 };
 
+let deleteUserById = (id) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: {
+          id: id,
+        },
+      });
+      if (user) {
+        await user.destroy();
+      }
+      resolve("Delete success !");
+    } catch (error) {
+      reject("Error:", error);
+    }
+  });
+};
+
 // hàm dùng để mã hoá pass
 let hashUserPassword = (password) => {
   return new Promise(async (resole, reject) => {
@@ -86,4 +104,5 @@ module.exports = {
   getAllUsers: getAllUsers,
   editUser: editUser,
   getUserInfoById: getUserInfoById,
+  deleteUserById: deleteUserById,
 };
