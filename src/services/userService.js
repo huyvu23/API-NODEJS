@@ -10,7 +10,6 @@ let handleUserLogin = (email, password) => {
         let user = await db.User.findOne({
           where: { email: email },
           attributes: ["email", "roleId", "password"], // define column you want return
-          raw: true,
         });
         // CHECK PASSWORD
         if (user) {
@@ -59,6 +58,36 @@ let checkUserEmail = (email) => {
   });
 };
 
+let getAllUsers = (userId) => {
+  return new Promise(async (resole, reject) => {
+    try {
+      let users = "";
+      if (userId === "ALL") {
+        users = db.User.findAll({
+          attributes: {
+            // SKIP PASSWORD WHEN RETURN
+            exclude: ["password"],
+          },
+        });
+      }
+      if (userId && userId !== "ALL") {
+        users = await db.User.findOne({
+          where: { id: userId },
+          attributes: {
+            // SKIP PASSWORD WHEN RETURN
+            exclude: ["password"],
+          },
+        });
+      }
+
+      resole(users);
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   handleUserLogin: handleUserLogin,
+  getAllUsers: getAllUsers,
 };

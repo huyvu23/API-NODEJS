@@ -17,6 +17,25 @@ const handleLogin = async (req, res) => {
   });
 };
 
+let getAllUsers = async (req, res) => {
+  let id = req.body.id;
+
+  if (!id) {
+    return res.status(500).json({
+      errCode: 1,
+      message: "Missing id",
+    });
+  }
+
+  let users = await userService.getAllUsers(id);
+  return res.status(200).json({
+    errCode: 0,
+    errMessage: "ok",
+    user: users,
+  });
+};
+
 module.exports = {
   handleLogin: handleLogin,
+  getAllUsers: getAllUsers,
 };

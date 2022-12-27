@@ -12,6 +12,7 @@ let initWebRoute = (app) => {
   router.put("/update-crud", homeController.putCRUD);
   router.delete("/delete-crud", homeController.deleteId);
   router.post("/api/login", userController.handleLogin);
+  router.get("/api/getAllUser", userController.getAllUsers);
   return app.use("/", router);
 };
 
