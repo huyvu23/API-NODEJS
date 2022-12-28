@@ -11,8 +11,10 @@ let initWebRoute = (app) => {
   router.get("/getUserById", homeController.getUserById);
   router.put("/update-crud", homeController.putCRUD);
   router.delete("/delete-crud", homeController.deleteId);
+  // ====================================================
   router.post("/api/login", userController.handleLogin);
-  router.get("/api/getAllUser", userController.getAllUsers);
+  router.get("/api/getAllUsers", userController.getAllUsers);
+  router.post("/api/createUser", userController.createNewUser);
   return app.use("/", router);
 };
 

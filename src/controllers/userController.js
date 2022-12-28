@@ -18,7 +18,7 @@ const handleLogin = async (req, res) => {
 };
 
 let getAllUsers = async (req, res) => {
-  let id = req.body.id;
+  let id = req.query.id;
 
   if (!id) {
     return res.status(500).json({
@@ -31,11 +31,45 @@ let getAllUsers = async (req, res) => {
   return res.status(200).json({
     errCode: 0,
     errMessage: "ok",
-    user: users,
+    users: users,
+  });
+};
+
+let createNewUser = async (req, res) => {
+  let {
+    email = "",
+    password = "",
+    firstName = "",
+    lastName = "",
+    address = "",
+    phoneNumber = "",
+    gender = "",
+    roleId = "",
+  } = req.body;
+  if (
+    !email ||
+    !password ||
+    !firstName ||
+    !lastName ||
+    !address ||
+    !phoneNumber ||
+    !gender ||
+    !roleId
+  ) {
+    return res.status(500).json({
+      errCode: 1,
+      message: "Missing inputs parameter",
+    });
+  }
+
+  let message = await userService.createUser(req.body);
+  return res.status(200).json({
+    message,
   });
 };
 
 module.exports = {
   handleLogin: handleLogin,
   getAllUsers: getAllUsers,
+  createNewUser: createNewUser,
 };

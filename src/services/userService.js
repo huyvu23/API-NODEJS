@@ -1,5 +1,6 @@
 import db from "../models";
 var bcrypt = require("bcryptjs");
+const salt = bcrypt.genSaltSync(10);
 
 let handleUserLogin = (email, password) => {
   return new Promise(async (resole, reject) => {
@@ -87,7 +88,53 @@ let getAllUsers = (userId) => {
   });
 };
 
+let createUser = (data) => {
+  return new Promise(async (resole, reject) => {
+    try {
+      // check email is exist ?
+      let check = await checkUserEmail(data.email);
+      if (check === true) {
+        resole({
+          errCode: 1,
+          message: "Email is exist",
+        });
+      } else {
+        let hashPassWord = await hashUserPassword(data.password);
+        await db.User.create({
+          email: data.email,
+          password: hashPassWord,
+          firstName: data.firstName,
+          lastName: data.lastName,
+          address: data.address,
+          phoneNumber: data.phoneNumber,
+          gender: data.gender === "1" ? true : false,
+          roleId: data.roleId,
+        });
+        resole({
+          errCode: 0,
+          message: "OK",
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
+// hàm dùng để mã hoá pass
+let hashUserPassword = (password) => {
+  return new Promise(async (resole, reject) => {
+    try {
+      var hash = await bcrypt.hashSync(password, salt);
+      resole(hash);
+    } catch (error) {
+      reject("Error:", error);
+    }
+  });
+};
+
 module.exports = {
   handleUserLogin: handleUserLogin,
   getAllUsers: getAllUsers,
+  createUser: createUser,
 };
