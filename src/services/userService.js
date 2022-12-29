@@ -160,9 +160,45 @@ let deleteUserById = (userId) => {
   });
 };
 
+let editUser = (data) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      if (!data.id) {
+        resolve({
+          errCode: 2,
+          message: "Missing id",
+        });
+      }
+      let user = await db.User.findOne({
+        where: { id: data.id },
+        raw: false,
+      });
+
+      if (!user) {
+        resolve({
+          errCode: 1,
+          message: "User not found !",
+        });
+      } else {
+        (user.firstName = data.firstName),
+          (user.lastName = data.lastName),
+          (user.address = data.address);
+        await user.save();
+        resolve({
+          errCode: 0,
+          message: "Update success !",
+        });
+      }
+    } catch (error) {
+      reject(error);
+    }
+  });
+};
+
 module.exports = {
   handleUserLogin: handleUserLogin,
   getAllUsers: getAllUsers,
   createUser: createUser,
   deleteUserById: deleteUserById,
+  editUser: editUser,
 };
