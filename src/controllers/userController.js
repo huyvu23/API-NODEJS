@@ -68,8 +68,28 @@ let createNewUser = async (req, res) => {
   });
 };
 
+let handleEditUser = (req, res) => {};
+
+let handleDeleteUser = async (req, res) => {
+  let id = req.body.id;
+
+  if (!id) {
+    return res.status(500).json({
+      errCode: 1,
+      message: "Missing parameter",
+    });
+  }
+  let message = await userService.deleteUserById(id);
+
+  return res.status(200).json({
+    message,
+  });
+};
+
 module.exports = {
   handleLogin: handleLogin,
   getAllUsers: getAllUsers,
   createNewUser: createNewUser,
+  handleEditUser: handleEditUser,
+  handleDeleteUser: handleDeleteUser,
 };

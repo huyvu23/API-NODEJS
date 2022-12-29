@@ -133,8 +133,36 @@ let hashUserPassword = (password) => {
   });
 };
 
+let deleteUserById = (userId) => {
+  return new Promise(async (resolve, reject) => {
+    try {
+      let user = await db.User.findOne({
+        where: {
+          id: userId,
+        },
+      });
+      if (!user) {
+        resolve({
+          errCode: 2,
+          message: "The user isn't exist !",
+        });
+      }
+      await db.User.destroy({
+        where: { id: userId },
+      });
+      resolve({
+        errCode: 0,
+        message: "Delete Success !",
+      });
+    } catch (error) {
+      reject("Error:", error);
+    }
+  });
+};
+
 module.exports = {
   handleUserLogin: handleUserLogin,
   getAllUsers: getAllUsers,
   createUser: createUser,
+  deleteUserById: deleteUserById,
 };
