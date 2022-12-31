@@ -46,16 +46,7 @@ let createNewUser = async (req, res) => {
     gender = "",
     roleId = "",
   } = req.body;
-  if (
-    !email ||
-    !password ||
-    !firstName ||
-    !lastName ||
-    !address ||
-    !phoneNumber ||
-    !gender ||
-    !roleId
-  ) {
+  if (!email || !password || !firstName || !lastName || !address) {
     return res.status(500).json({
       errCode: 1,
       message: "Missing inputs parameter",
