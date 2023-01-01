@@ -146,14 +146,15 @@ let deleteUserById = (userId) => {
           errCode: 2,
           message: "The user isn't exist !",
         });
+      } else {
+        await db.User.destroy({
+          where: { id: userId },
+        });
+        resolve({
+          errCode: 0,
+          message: "Delete Success !",
+        });
       }
-      await db.User.destroy({
-        where: { id: userId },
-      });
-      resolve({
-        errCode: 0,
-        message: "Delete Success !",
-      });
     } catch (error) {
       reject("Error:", error);
     }
